@@ -1,0 +1,9 @@
+﻿@model IEnumerable<CRUD.Models.Produto>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-left" style="padding-top:30px;">
+    <h4>Total de produtos cadastrados: @ViewBag.TotalProdutos</h4>
+    <h4>Valor total de produtos: @ViewBag.Soma</h4>
+</div>

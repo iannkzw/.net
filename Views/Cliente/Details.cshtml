@@ -1,0 +1,80 @@
+﻿@model CRUD.Models.Cliente
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Cliente</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Telefone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Telefone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Produto)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Vendedor)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Vendedor.Nome)
+        </dd>
+    </dl>
+</div>
+
+<h3>Produtos do cliente:</h3>
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Valor
+                </th>
+                <th>
+                    Data de registro
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var produto in Model.Produtos)
+            {
+            <tr>
+                <td>
+                    @produto.Descricao
+                </td>
+                <td>
+                    @produto.Valor
+                </td>
+                <td>
+                    @produto.CriadoEm
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Produto" asp-route-id="@produto.ID"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                    <a asp-action="Details" asp-controller="Produto" asp-route-id="@produto.ID"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
+                    <a asp-action="Delete" asp-controller="Produto" asp-route-id="@produto.ID"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
