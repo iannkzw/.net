@@ -1,5 +1,4 @@
-﻿$(document).ready(function () {
-/*$('#tel').mask('(00) 00000-0000');*/
-
+﻿
+$(document).ready(function () {
     $("#tel").inputmask({ "mask": "(99) 99999-9999" }); 
 });
