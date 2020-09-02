@@ -1,80 +1,94 @@
 ﻿@model PaginatedList<CRUD.Models.Vendedor>
 
-@{
-    ViewData["Title"] = "Index";
-}
+<div class="row" style="padding:45px 0px 40px 0px;">
+    <div class="card col-lg-11 ">
+        <h3 class=" card-header text-secondary">Listagem de representantes <span class="text-info material-icons">trending_up</span></h3>
+        <div class="card-body">
+            <form asp-action="Index" method="get">
+                <div>
+                    <p>
+                        <input class="text-center" type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="Nome  ou E-mail" style="height: 35px; border-radius: 5px; border-style: none; background:#e3e5e7;"/>
+                        <input type="submit" value="Pesquisar" class="btn btn-sm btn-info" />
+                    </p>
+                </div>
+            </form>
 
-<h3 class="text-secondary text-center" style="padding:20px 0px 20px 0px;" >Listagem de representantes</h3>
+            <table class="table table-bordered mt-4">
+                <thead class="bg-white">
+                    <tr>
+                        <th>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["NomeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                Nome
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
 
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="Nome  ou E-mail" />
-            <input type="submit" value="Pesquisar" class="btn btn-sm btn-primary" />
-            <a class="btn btn-sm btn-outline-secondary" asp-action="Index">Voltar</a>
-        </p>
+                            </a>
+                        </th>
+                        <th>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                E-mail
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a class="text-dark" href="#">Telefone</a>
+                        </th>
+                        <th class="text-dark">
+                            Operações
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Nome
+                            </td>
+                            <td>
+                                @item.Email
+                            </td>
+                            <td>
+                                @item.Telefone
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.Id"><i class="text-info fa fa-edit" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.Id"><i class="text-info ml-1 fa fa-search-plus" aria-hidden="true"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"><i class="text-info  ml-1 fa fa-times-circle" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="mt-4 btn btn-default @prevDisabled">
+                Voltar
+            </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="mt-4 btn btn-default @nextDisabled">
+                Proximo
+            </a>
+
+
+            <p class="text-center">
+                <a class="btn btn-success" asp-action="Create">Cadastrar vendedor</a>
+            </p>
+        </div>
     </div>
-</form>
+</div>
 
-<table class="table mt-4">
-    <thead>
-        <tr>
-            <th>
-                <a class="btn btn-sm btn-outline-info" asp-action="Index" asp-route-sortOrder="@ViewData["NomeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nome</a>
-            </th>
-            <th>
-                <a class="btn btn-sm btn-outline-info" asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">E-mail</a>
-            </th>
-            <th>
-                <a class="btn btn-sm btn-outline-info" href="#">Telefone</a>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefone)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit" aria-hidden="true"></i></a> 
-                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
-
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @prevDisabled">
-    Voltar
-</a>
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @nextDisabled">
-    Proximo
-</a>
-
-
-<p class="text-center">
-    <a class="btn btn-success" asp-action="Create">Cadastrar vendedor</a>
-</p>

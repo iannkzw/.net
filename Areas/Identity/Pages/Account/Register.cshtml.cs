@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CRUD.Areas.Identity.Pages.Account
 {
+    [Authorize]
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {

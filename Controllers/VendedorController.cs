@@ -61,7 +61,7 @@ namespace CRUD.Controllers
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = 5;
 
             return View(await PaginatedList<Vendedor>.CreateAsync(vendedores.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
@@ -93,7 +93,7 @@ namespace CRUD.Controllers
      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Telefone")] VendedorViewModel vendedor)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Telefone")] Vendedor vendedor)
         {
             if (ModelState.IsValid)
             {
@@ -123,7 +123,7 @@ namespace CRUD.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Telefone")] VendedorViewModel vendedor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Telefone")] Vendedor vendedor)
         {
             if (id != vendedor.Id)
             {

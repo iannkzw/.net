@@ -1,72 +1,79 @@
 ﻿@model CRUD.Models.Vendedor
 
-@{
-    ViewData["Title"] = "Details";
-}
 
-<h2 class="text-center text-secondary">Detalhe</h2>
+<div class="row" style="padding:45px 0px 40px 0px;">
+    <div class="card" style="width: 90%;">
+        <h4 class=" card-header text-secondary">Detalhe representante <i class="text-info fa fa-briefcase"></i></h4>
+        <div class="card-body">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        ID
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+                    <dt class="col-sm-2">
+                        Nome
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Nome)
+                    </dd>
+                    <dt class="col-sm-2">
+                       E-mail
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+                    <dt class="col-sm-2">
+                      Telefone
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Telefone)
+                    </dd>
+                </dl>
+            </div>
+            <hr />
+            <h4 class=" mt-4 text-secondary">Clientes do representante <i class="text-info fa fa-users"></i></h4>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                Telefone
+                            </th>
 
-<div>
-    <h4>Vendedor</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Telefone)
-        </dd>
-    </dl>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cliente in Model.Clientes)
+                        {
+                            <tr>
+                                <td>
+                                    @cliente.Nome
+                                </td>
+                                <td>
+                                    @cliente.Telefone
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-controller="Cliente" asp-route-id="@cliente.Id"><i class="text-info fa fa-edit" aria-hidden="true"></i></a>
+                                    <a asp-action="Details" asp-controller="Cliente" asp-route-id="@cliente.Id"><i class="text-info ml-1 fa fa-search-plus" aria-hidden="true"></i></a>
+                                    <a asp-action="Delete" asp-controller="Cliente" asp-route-id="@cliente.Id"><i class="text-info ml-1 fa fa-times-circle" aria-hidden="true"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <a class="btn btn-sm btn-outline-primary" asp-action="Index">Voltar</a>
+            </div>
+        </div>
+    </div>
 </div>
-<h3>Clientes relacionados ao vendedor:</h3>
-<div class="row">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Nome
-                </th>
-                <th>
-                    Telefone
-                </th>
 
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var cliente in Model.Clientes)
-            {
-                <tr>
-                    <td>
-                        @cliente.Nome
-                    </td>
-                    <td>
-                        @cliente.Telefone
-                    </td>             
-                    <td>
-                        <a asp-action="Edit" asp-controller="Cliente" asp-route-id="@cliente.Id"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                        <a asp-action="Details" asp-controller="Cliente" asp-route-id="@cliente.Id"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
-                        <a asp-action="Delete" asp-controller="Cliente" asp-route-id="@cliente.Id"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <a class="btn btn-sm btn-outline-info" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
-    <a class="btn btn-sm btn-outline-secondary" asp-action="Index">Voltar</a>
-</div>

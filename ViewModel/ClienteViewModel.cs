@@ -17,13 +17,8 @@ namespace CRUD.ViewModel
 
         [Required]
         public int Telefone { get; set; }
-
-        [Required]
         public string Produto { get; set; }
-
-        [Required]
         public float Valor { get; set; }
-
         public int VendedorID { get; set; }
         public virtual Vendedor Vendedor { get; set; }
         public virtual ICollection<Produto> Produtos { get; set; }
