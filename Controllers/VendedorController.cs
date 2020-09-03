@@ -9,6 +9,7 @@ using CRUD.DataBase;
 using CRUD.Models;
 using CRUD.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 
 namespace CRUD.Controllers
 {
@@ -16,9 +17,11 @@ namespace CRUD.Controllers
     public class VendedorController : Controller
     {
         private readonly ApplicationDBContext _context;
+        private readonly IMapper _mapper;
 
-        public VendedorController(ApplicationDBContext context)
+        public VendedorController(ApplicationDBContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -93,11 +96,14 @@ namespace CRUD.Controllers
      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Telefone")] Vendedor vendedor)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Telefone")] VendedorViewModel vendedor)
         {
+
             if (ModelState.IsValid)
             {
-                _context.Add(vendedor);
+                var v = _mapper.Map<VendedorViewModel, Vendedor>(vendedor);
+
+                _context.Add(v);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

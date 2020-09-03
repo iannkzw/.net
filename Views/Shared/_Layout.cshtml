@@ -40,7 +40,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
             </ul>
 
-            @{ Html.RenderPartial("_LoginPartial.cshtml"); }
+            @{ await Html.RenderPartialAsync("_LoginPartial.cshtml"); }
 
         </nav>
 
@@ -76,15 +76,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
 
-                        @if (SignInManager.IsSignedIn(User))
-                        {
 
                             <li class="nav-item">
                                 <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">
                                     Cadastrar usuário <i class="ml-1 fa  fa-plus"></i>
                                 </a>
                             </li>
-                        }
+                        
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

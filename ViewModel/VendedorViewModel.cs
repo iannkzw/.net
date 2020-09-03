@@ -14,7 +14,7 @@ namespace CRUD.ViewModel
         public int Id { get; set; }
 
         [Required(ErrorMessage ="Campo Obrigatorio")]
-        [StringLength(5, MinimumLength = 3, ErrorMessage = "teste")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "teste")]
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Campo Obrigatorio")]
@@ -22,7 +22,7 @@ namespace CRUD.ViewModel
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Campo Obrigatorio")]
-        public int Telefone { get; set; }
+        public string Telefone { get; set; }
 
         public virtual ICollection<Cliente> Clientes { get; set; }
     }

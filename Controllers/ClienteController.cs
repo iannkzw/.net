@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CRUD.DataBase;
 using CRUD.Models;
 using Microsoft.AspNetCore.Authorization;
+using CRUD.ViewModel;
 
 namespace CRUD.Controllers
 {
@@ -21,14 +22,14 @@ namespace CRUD.Controllers
             _context = context;
         }
 
-        // GET: Cliente
+   
         public async Task<IActionResult> Index()
         {
             var applicationDBContext = _context.Clientes.Include(c => c.Vendedor).Include(c => c.Produtos);
             return View(await applicationDBContext.ToListAsync());
         }
 
-        // GET: Cliente/Details/5
+ 
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,22 +49,22 @@ namespace CRUD.Controllers
             return View(cliente);
         }
 
-        // GET: Cliente/Create
+       
         public IActionResult Create()
         {
             ViewData["VendedorID"] = new SelectList(_context.Vendedores, "Id", "Email");
             return View();
         }
 
-        // POST: Cliente/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Telefone,Produto,Valor,VendedorID")] Cliente cliente)
+        public async Task<IActionResult> Create(Cliente cliente)
         {
             if (ModelState.IsValid)
             {
+                //TODO: Fazer conversão da viewmodel para model
+
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -72,7 +73,7 @@ namespace CRUD.Controllers
             return View(cliente);
         }
 
-        // GET: Cliente/Edit/5
+    
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,7 +95,7 @@ namespace CRUD.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Telefone,Produto,Valor,VendedorID")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Telefone,VendedorID")] Cliente cliente)
         {
             if (id != cliente.Id)
             {

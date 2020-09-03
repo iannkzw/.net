@@ -16,8 +16,8 @@ namespace CRUD.ViewModel
         [MaxLength(150)]
         public string Descricao { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:C}")]
-        [Required(ErrorMessage = "campo obrigatorio")]
+       // [DisplayFormat(DataFormatString = "{0:C}")]
+        
         public float Valor { get; set; }
 
         [Required(ErrorMessage = "Campo obrigatorio")]
