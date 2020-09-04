@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\crud\\CRUD.csproj": {}
+    "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\CRUD\\CRUD.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\crud\\CRUD.csproj": {
+    "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\CRUD\\CRUD.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\crud\\CRUD.csproj",
+        "projectUniqueName": "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\CRUD\\CRUD.csproj",
         "projectName": "CRUD",
-        "projectPath": "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\crud\\CRUD.csproj",
+        "projectPath": "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\CRUD\\CRUD.csproj",
         "packagesPath": "C:\\Users\\ian.nakazawa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\crud\\obj\\",
+        "outputPath": "C:\\Users\\ian.nakazawa\\source\\repos\\CRUD\\CRUD\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Microsoft\\Xamarin\\NuGet\\",
