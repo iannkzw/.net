@@ -12,18 +12,14 @@ namespace CRUD.ViewModel
 
         [Key]
         public int Id { get; set; }
-
         [Required(ErrorMessage ="Campo Obrigatorio")]
-        [StringLength(100, MinimumLength = 3, ErrorMessage = "teste")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "Mínimo de caracteres: 3")]
         public string Nome { get; set; }
-
         [Required(ErrorMessage = "Campo Obrigatorio")]
-        [StringLength(100, MinimumLength = 10, ErrorMessage = "Teste")]
+        [StringLength(100, MinimumLength = 7, ErrorMessage = "Mínimo de caracteres: 7")]
         public string Email { get; set; }
-
         [Required(ErrorMessage = "Campo Obrigatorio")]
         public string Telefone { get; set; }
-
         public virtual ICollection<Cliente> Clientes { get; set; }
     }
 }

@@ -29,8 +29,11 @@ namespace CRUD.Controllers
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["NomeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "nome_desc" : "";
+            ViewData["NomeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "nome_asc" : "nome_desc";
             ViewData["EmailSortParm"] = String.IsNullOrEmpty(sortOrder) ? "email_desc" : "";
+            ViewData["TelefoneSortParm"] = sortOrder == "Tel" ? "tel_desc" : "Tel";
+            ViewData["IDSortParm"] = sortOrder == "ID" ? "id_desc" : "ID";
+
 
             if (searchString != null)
             {
@@ -53,14 +56,29 @@ namespace CRUD.Controllers
 
             switch (sortOrder)
             {
+                case "ID":
+                    vendedores = vendedores.OrderBy(s => s.Id);
+                    break;
+                case "id_desc":
+                    vendedores = vendedores.OrderByDescending(s => s.Id);
+                    break;
                 case "nome_desc":
                     vendedores = vendedores.OrderByDescending(s => s.Nome);
+                    break;
+                 case "nome_asc":
+                    vendedores = vendedores.OrderBy(s => s.Nome);
                     break;
                 case "email_desc":
                     vendedores = vendedores.OrderByDescending(s => s.Email);
                     break;
+                 case "Tel":
+                    vendedores = vendedores.OrderBy(s => s.Telefone);
+                    break;
+                case "tel_desc":
+                    vendedores = vendedores.OrderByDescending(s => s.Telefone);
+                    break;
                 default:
-                    vendedores = vendedores.OrderBy(s => s.Nome);
+                    vendedores = vendedores.OrderByDescending(s => s.Id);
                     break;
             }
 
@@ -79,12 +97,13 @@ namespace CRUD.Controllers
 
             var vendedor = await _context.Vendedores.Include("Clientes")
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var v = _mapper.Map<Vendedor, VendedorViewModel>(vendedor);
             if (vendedor == null)
             {
                 return NotFound();
             }
 
-            return View(vendedor);
+            return View(v);
         }
 
    
@@ -96,7 +115,7 @@ namespace CRUD.Controllers
      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Telefone")] VendedorViewModel vendedor)
+        public async Task<IActionResult> Create( VendedorViewModel vendedor)
         {
 
             if (ModelState.IsValid)
@@ -117,19 +136,17 @@ namespace CRUD.Controllers
             {
                 return NotFound();
             }
-
+               
             var vendedor = await _context.Vendedores.FindAsync(id);
-            if (vendedor == null)
-            {
-                return NotFound();
-            }
-            return View(vendedor);
+            var v = _mapper.Map<Vendedor, VendedorViewModel>(vendedor);
+          
+            return View(v);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Telefone")] Vendedor vendedor)
+        public async Task<IActionResult> Edit(int id, VendedorViewModel vendedor)
         {
             if (id != vendedor.Id)
             {
@@ -140,7 +157,8 @@ namespace CRUD.Controllers
             {
                 try
                 {
-                    _context.Update(vendedor);
+                     var v = _mapper.Map<VendedorViewModel, Vendedor>(vendedor);
+                    _context.Update(v);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -169,12 +187,13 @@ namespace CRUD.Controllers
 
             var vendedor = await _context.Vendedores
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var v = _mapper.Map<Vendedor, VendedorViewModel>(vendedor);
             if (vendedor == null)
             {
                 return NotFound();
             }
 
-            return View(vendedor);
+            return View(v);
         }
 
 

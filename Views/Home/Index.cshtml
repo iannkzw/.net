@@ -1,9 +1,166 @@
-﻿@model IEnumerable<CRUD.Models.Produto>
-@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model PaginatedList<CRUD.Models.Produto>
 
-<div class="text-left" style="padding-top:30px;">
-    <h4>Total de produtos cadastrados: @ViewBag.TotalProdutos</h4>
-    <h4>Valor total de produtos: @ViewBag.Soma</h4>
+
+<div class="row" style="padding:45px 0px 40px 0px;">
+
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Total de clientes</span>
+                <span class="info-box-number">@ViewBag.TotalClientes</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-credit-card"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Valor total de produtos</span>
+                <span class="info-box-number">@ViewBag.Soma</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix hidden-md-up"></div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Total de produtos</span>
+                <span class="info-box-number">@ViewBag.TotalProdutos</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-info elevation-1"><i class="fas fa fa-briefcase"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Total de representantes</span>
+                <span class="info-box-number">@ViewBag.TotalVendedores</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-lg-12">
+        <h3 class=" card-header text-secondary">Últimos produtos cadastrados <span class="text-info material-icons">trending_up</span></h3>
+        <div class="card-body">
+            <form class="col-4" asp-action="Index" method="get">
+                <div class="input-group">
+                    <input class="form-control text-center" aria-describedby="basic-addon2" type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="Descrição do produto" style="border-radius: 5px;" />
+                    <div class="input-group-append">
+                        <input type="submit" value="Pesquisar" class="input-group-text btn btn-sm btn-info" id="basic-addon2" />
+                    </div>
+
+                </div>
+            </form>
+            <table class="table table-bordered mt-4">
+                <thead class="bg-white">
+                    <tr>
+                        <th>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                ID
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
+
+                            </a>
+                        </th>
+                        <th>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["DescricaoSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                Descrição
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
+
+                            </a>
+                        </th>
+                        <th>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["ValorSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                Valor
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                Data de registro
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["ClienteSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                Cliente
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
+                            </a>
+                        </th>
+                        <th class="text-dark">
+                            Operações
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <p asp-for="@item.ID">@item.ID</p>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Descricao)
+                            </td>
+                            <td>
+                                @*<p asp-for="@item.Valor">@string.Format("R$ {0:0,0.00}", item.Valor)</p>*@
+                                <p asp-for="@item.Valor">R$ @item.Valor</p>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CriadoEm)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                            </td>
+                            <td class="text-center">
+                                <a asp-controller="Produto" asp-action="Edit" asp-route-id="@item.ID"><i class="text-info fa fa-edit" aria-hidden="true"></i></a>
+                                <a asp-controller="Produto" asp-action="Details" asp-route-id="@item.ID"><i class="text-info ml-1 fa fa-search-plus" aria-hidden="true"></i></a>
+                                <a asp-controller="Produto" asp-action="Delete" asp-route-id="@item.ID"><i class="text-info  ml-1 fa fa-times-circle" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="mt-4 btn btn-outline-info btn-default @prevDisabled">
+                Voltar
+            </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="mt-4 btn btn-outline-info btn-default @nextDisabled">
+                Proximo
+            </a>
+
+        </div>
+    </div>
 </div>

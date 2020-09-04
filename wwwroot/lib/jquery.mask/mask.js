@@ -2,20 +2,6 @@
 $(document).ready(function () {
     $("#tel").inputmask({ "mask": "(99) 99999-9999" }); 
 
-    //Input mask
-    /*$('#money').inputmask('decimal', {
-        rightAlign: true,
-        groupSeparator: '',
-        autoGroup: false,
-        digits: 2,
-        radixPoint: ",",
-        digitsOptional: false,
-        allowMinus: false,
-        prefix: "R$ ",
-        placeholder: '',
-        autoUnmask: true,
-        removeMaskOnSubmit: true*/
-
     $('#money').inputmask('decimal', {
         radixPoint: ",",
         groupSeparator: ".",
@@ -28,6 +14,11 @@ $(document).ready(function () {
         onBeforeMask: function (value, opts) {
             return value;
         }
+    });
+
+    $("#cpf").inputmask({
+        mask: ["999.999.999-99"],
+        keepStatic: true
     });
    
 });

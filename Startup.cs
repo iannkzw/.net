@@ -40,6 +40,15 @@ namespace CRUD
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<VendedorViewModel, Models.Vendedor>();
+                cfg.CreateMap<Models.Vendedor, VendedorViewModel>();
+
+                cfg.CreateMap<ClienteViewModel, Models.Cliente>();
+                cfg.CreateMap<Models.Cliente, ClienteViewModel>();
+
+                cfg.CreateMap<ProdutoViewModel, Models.Produto>();
+                cfg.CreateMap<Models.Produto, ProdutoViewModel>();
+
+
             });
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);

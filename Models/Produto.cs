@@ -10,7 +10,6 @@ namespace CRUD.Models
     {
         public int ID { get; set; }
         public string Descricao { get; set; }
-        
         public float Valor { get; set; }
         public DateTime CriadoEm { get; set; }
         public int ClienteID { get; set; }

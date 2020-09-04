@@ -4,18 +4,27 @@
     <div class="card col-lg-11 ">
         <h3 class=" card-header text-secondary">Listagem de representantes <span class="text-info material-icons">trending_up</span></h3>
         <div class="card-body">
-            <form asp-action="Index" method="get">
-                <div>
-                    <p>
-                        <input class="text-center" type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="Nome  ou E-mail" style="height: 35px; border-radius: 5px; border-style: none; background:#e3e5e7;"/>
-                        <input type="submit" value="Pesquisar" class="btn btn-sm btn-info" />
-                    </p>
+            <form class="col-4" asp-action="Index" method="get">
+                <div class="input-group">
+                    <input class="form-control text-center" aria-describedby="basic-addon2" type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="Nome  ou E-mail" style="border-radius: 5px;" />
+                    <div class="input-group-append">
+                        <input type="submit" value="Pesquisar" class="input-group-text btn btn-sm btn-info" id="basic-addon2" />
+                    </div>
+
                 </div>
             </form>
-
             <table class="table table-bordered mt-4">
                 <thead class="bg-white">
                     <tr>
+                        <th>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                ID
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
+
+                            </a>
+                        </th>
                         <th>
                             <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["NomeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
                                 Nome
@@ -34,7 +43,12 @@
                             </a>
                         </th>
                         <th>
-                            <a class="text-dark" href="#">Telefone</a>
+                            <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["TelefoneSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                Telefone
+                                <span class="material-icons">
+                                    swap_vert
+                                </span>
+                            </a>
                         </th>
                         <th class="text-dark">
                             Operações
@@ -44,22 +58,25 @@
                 <tbody class="bg-white">
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @item.Nome
-                            </td>
-                            <td>
-                                @item.Email
-                            </td>
-                            <td>
-                                @item.Telefone
-                            </td>
-                            <td class="text-center">
-                                <a asp-action="Edit" asp-route-id="@item.Id"><i class="text-info fa fa-edit" aria-hidden="true"></i></a>
-                                <a asp-action="Details" asp-route-id="@item.Id"><i class="text-info ml-1 fa fa-search-plus" aria-hidden="true"></i></a>
-                                <a asp-action="Delete" asp-route-id="@item.Id"><i class="text-info  ml-1 fa fa-times-circle" aria-hidden="true"></i></a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @item.Id
+                        </td>
+                        <td>
+                            @item.Nome
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.Telefone
+                        </td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@item.Id"><i class="text-info fa fa-edit" aria-hidden="true"></i></a>
+                            <a asp-action="Details" asp-route-id="@item.Id"><i class="text-info ml-1 fa fa-search-plus" aria-hidden="true"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id"><i class="text-info  ml-1 fa fa-times-circle" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

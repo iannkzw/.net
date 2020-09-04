@@ -1,47 +1,110 @@
-﻿@model IEnumerable<CRUD.Models.Cliente>
+﻿@model PaginatedList<CRUD.Models.Cliente>
 
-@{
-    ViewData["Title"] = "Index";
-}
+    <div class="row" style="padding:45px 0px 40px 0px;">
+        <div class="card col-lg-11 ">
+            <h3 class=" card-header text-secondary">Listagem de clientes <span class="text-info material-icons">trending_up</span></h3>
+            <div class="card-body">
+                <form class="col-4" asp-action="Index" method="get">
+                    <div class="input-group">
+                        <input class="form-control text-center" aria-describedby="basic-addon2" type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="Nome  ou Telefone" style="border-radius: 5px;" />
+                        <div class="input-group-append">
+                            <input type="submit" value="Pesquisar" class="input-group-text btn btn-sm btn-info" id="basic-addon2" />
+                        </div>
 
-<h1>Index</h1>
+                    </div>
+                </form>
+                <table class="table table-bordered mt-4">
+                    <thead class="bg-white">
+                        <tr>
+                            <th>
+                                <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    ID
+                                    <span class="material-icons">
+                                        swap_vert
+                                    </span>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vendedor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vendedor.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                                </a>
+                            </th>
+                            <th>
+                                <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["NomeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    Nome
+                                    <span class="material-icons">
+                                        swap_vert
+                                    </span>
+
+                                </a>
+                            </th>
+                            <th>
+                                <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["TelefoneSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    Telefone
+                                    <span class="material-icons">
+                                        swap_vert
+                                    </span>
+                                </a>
+                            </th>
+                            <th>
+                                <a class="text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["VendedorSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    Vendedor
+                                    <span class="material-icons">
+                                        swap_vert
+                                    </span>
+                                </a>
+                            </th>
+                            <th class="text-dark">
+                                Operações
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.Nome
+                            </td>
+                            <td>
+                                @item.Telefone
+                            </td>
+                            <td>
+                                @item.Vendedor.Nome
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.Id"><i class="text-info fa fa-edit" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.Id"><i class="text-info ml-1 fa fa-search-plus" aria-hidden="true"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"><i class="text-info  ml-1 fa fa-times-circle" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+
+                @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                }
+
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="mt-4 btn btn-default @prevDisabled">
+                    Voltar
+                </a>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="mt-4 btn btn-default @nextDisabled">
+                    Proximo
+                </a>
+
+
+                <p class="text-center">
+                    <a class="btn btn-success" asp-action="Create">Cadastrar cliente</a>
+                </p>
+            </div>
+        </div>
+    </div>

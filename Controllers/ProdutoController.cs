@@ -1,5 +1,7 @@
-﻿using CRUD.DataBase;
+﻿using AutoMapper;
+using CRUD.DataBase;
 using CRUD.Models;
+using CRUD.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,22 +17,84 @@ namespace CRUD.Controllers
     public class ProdutoController : Controller
     {
         private readonly ApplicationDBContext _context;
+        private readonly IMapper _mapper;
 
-        public ProdutoController(ApplicationDBContext context)
+        public ProdutoController(ApplicationDBContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
-
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["ClienteSortParm"] = String.IsNullOrEmpty(sortOrder) ? "cliente_asc" : "cliente_desc";
+            ViewData["DescricaoSortParm"] = String.IsNullOrEmpty(sortOrder) ? "descricao_asc" : "descricao_desc";
+            ViewData["ValorSortParm"] = sortOrder == "Valor" ? "valor_desc" : "Valor";
+            ViewData["IDSortParm"] = sortOrder == "ID" ? "id_desc" : "ID";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
 
-            var applicationDBContext = _context.Produtos.Include(p => p.Cliente);
 
-           
-            return View(await applicationDBContext.ToListAsync());
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var produtos = from s in _context.Produtos.Include(p => p.Cliente)
+                            select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                produtos = produtos.Where(s => s.Descricao.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "ID":
+                    produtos = produtos.OrderBy(s => s.ID);
+                    break;
+                case "id_desc":
+                    produtos = produtos.OrderByDescending(s => s.ID);
+                    break;
+                case "descricao_desc":
+                    produtos = produtos.OrderByDescending(s => s.Descricao);
+                    break;
+                case "descricao_asc":
+                    produtos = produtos.OrderBy(s => s.Descricao);
+                    break;
+                case "cliente_desc":
+                    produtos = produtos.OrderByDescending(s => s.Cliente.Nome);
+                    break;
+                case "cliente_asc":
+                    produtos = produtos.OrderBy(s => s.Cliente.Nome);
+                    break;
+                case "Valor":
+                    produtos = produtos.OrderBy(s => s.Valor);
+                    break;
+                case "valor_desc":
+                    produtos = produtos.OrderByDescending(s => s.Valor);
+                    break;
+                case "Date":
+                    produtos = produtos.OrderBy(s => s.CriadoEm);
+                    break;
+                case "date_desc":
+                    produtos = produtos.OrderByDescending(s => s.CriadoEm);
+                    break;
+                default:
+                    produtos = produtos.OrderByDescending(s => s.ID);
+                    break;
+            }
+
+            int pageSize = 5;
+
+            return View(await PaginatedList<Produto>.CreateAsync(produtos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
-
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -42,12 +106,14 @@ namespace CRUD.Controllers
             var produto = await _context.Produtos
                 .Include(p => p.Cliente)
                 .FirstOrDefaultAsync(m => m.ID == id);
+            var p = _mapper.Map<Produto, ProdutoViewModel>(produto);
+
             if (produto == null)
             {
                 return NotFound();
             }
 
-            return View(produto);
+            return View(p);
         }
 
 
@@ -60,12 +126,14 @@ namespace CRUD.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Produto produto)
+        public async Task<IActionResult> Create(ProdutoViewModel produto)
         {
             if (ModelState.IsValid)
             {
-                produto.CriadoEm = DateTime.Now;
-                _context.Add(produto);
+                var p = _mapper.Map<ProdutoViewModel, Produto>(produto); 
+
+                p.CriadoEm = DateTime.Now;
+                _context.Add(p);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -82,17 +150,15 @@ namespace CRUD.Controllers
             }
 
             var produto = await _context.Produtos.FindAsync(id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
+            var p = _mapper.Map<Produto, ProdutoViewModel>(produto);
+
             ViewData["ClienteID"] = new SelectList(_context.Clientes, "Id", "Nome", produto.ClienteID);
-            return View(produto);
+            return View(p);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Descricao,Valor,CriadoEm,ClienteID")] Produto produto)
+        public async Task<IActionResult> Edit(int id, ProdutoViewModel produto)
         {
             if (id != produto.ID)
             {
@@ -103,7 +169,8 @@ namespace CRUD.Controllers
             {
                 try
                 {
-                    _context.Update(produto);
+                    var p = _mapper.Map<ProdutoViewModel, Produto>(produto);
+                    _context.Update(p);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -134,12 +201,10 @@ namespace CRUD.Controllers
             var produto = await _context.Produtos
                 .Include(p => p.Cliente)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
 
-            return View(produto);
+            var p = _mapper.Map<Produto, ProdutoViewModel>(produto);
+          
+            return View(p);
         }
 
 

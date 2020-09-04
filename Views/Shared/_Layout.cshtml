@@ -36,7 +36,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link text-secondary" style="font-weight:bold;">Home</a>
                 </li>
             </ul>
 
@@ -48,7 +48,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-link">
                 <span class="ml-2 font-weight-bold text-white">Nutrimax</span>
             </a>
 
@@ -95,7 +95,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Content Header (Page header) -->
             <!-- /.content-header -->
             <!-- Main content -->
-            <div class="content ml-5">
+            <div class="content ml-5 mr-5">
                 @RenderBody()
             </div>
             <!-- /.content -->
